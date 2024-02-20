@@ -1,21 +1,19 @@
 package com.api.save.csv.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @AllArgsConstructor
@@ -55,8 +53,7 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.type == UserType.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override
