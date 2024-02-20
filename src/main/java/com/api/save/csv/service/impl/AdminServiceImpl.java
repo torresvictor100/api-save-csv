@@ -10,6 +10,7 @@ import com.api.save.csv.exception.AdminNotUpdateException;
 import com.api.save.csv.repository.AdminRepository;
 import com.api.save.csv.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,15 +51,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin findByEmail(String email) {
-        Optional<Admin> optionalAdmin = adminRepository.findByEmail(email);
-        return optionalAdmin.orElseThrow(() -> new AdminNotFoundException("Admin not found"));
-    }
-
-    @Override
-    public Admin findEmailLogin(String email) {
-        Optional<Admin> optionalAdmin = adminRepository.findByEmail(email);
-        return optionalAdmin.orElse(null);
+    public UserDetails findEmailLogin(String email) {
+        UserDetails optionalAdmin = adminRepository.findByEmail(email);
+        return optionalAdmin;
     }
 
     @Override

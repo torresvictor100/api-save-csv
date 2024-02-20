@@ -9,6 +9,7 @@ import com.api.save.csv.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
 public class AdminController {
 
     @Autowired
@@ -40,18 +42,6 @@ public class AdminController {
         try {
             List<Admin> adminList = adminService.findByName(name);
             return new ResponseEntity<>(AdminResponseDTO.fromAdminList(adminList), HttpStatus.OK);
-        } catch (AdminNotFoundException exception) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @Operation(summary = "Find Users by Admin", tags = "Admin")
-    @GetMapping(path = "/email/{admin_email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<AdminResponseDTO> findByEmail(@PathVariable(name = "admin_email") String email) {
-        try {
-            Admin admin = adminService.findByEmail(email);
-            return new ResponseEntity<>(new AdminResponseDTO(admin), HttpStatus.OK);
         } catch (AdminNotFoundException exception) {
             return ResponseEntity.notFound().build();
         }
